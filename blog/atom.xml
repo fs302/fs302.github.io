@@ -17,7 +17,7 @@ layout: nil
    {% for post in site.posts limit:10 %}
    <entry>
      <title>{{ post.title }}</title>
-     <link href="http://fs302.github.io{{ post.url }}"/>
+     <link href="http://fs302.github.io/blog/{{ post.url }}"/>
      <updated>{{ post.date | date_to_xmlschema }}</updated>
      <id>http://fs302.github.io/blog/{{ post.id }}</id>
      <content type="html">{{ post.content | xml_escape }}</content>
