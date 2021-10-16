@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Projects </title>
+</head>
+<body>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">FindShine</div>
+<div class="menu-item"><a href="index.html">Main</a></div>
+<div class="menu-item"><a href="research.html">Research</a></div>
+<div class="menu-item"><a href="projects.html" class="current">Projects</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Projects </h1>
+</div>
+<h2>UDP FileSystem with flash transmit</h2>
+<p><i>A Training project in my internship at Tencent (Augest 27th, 2013)</i></p>
+<table class="imgtable"><tr><td>
+<img src="image/UDP_filesystem.png" alt="UDP_filesystem" width="440px" />&nbsp;</td>
+<td align="left"><p>A filesystem support basic downloads/show directory/upload methods. While in upload process, server can detect same file(with the same md5) in the server and using flash transmit to stop transmition in the network.</p>
+<p>Key technologies used in this project: <tt>C</tt>.</p>
+<p>Code stored in github: <a href="http://github.com/fs302/FileServer">http://github.com/fs302/FileServer</a></p>
+<p>Test report:<a href="http://www.findshine.com/doc/UDP_filesystem.pdf">UDP_FileSystem</a></p>
+</td></tr></table>
+<h2>UESTC-Connect6 game</h2>
+<p><i>Students Research Funds of UESTC, In Collaboration with Yong-jun Lee, advised by Prof.Hui Gao (Dec 18th, 2012)</i></p>
+<table class="imgtable"><tr><td>
+<img src="image/connect6.jpg" alt="Connect6" width="440px" />&nbsp;</td>
+<td align="left"><p><a href="http://en.wikipedia.org/wiki/Connect6">Connect6</a> was introduced in 2003 by Professor I-Chen Wu at Taiwan. It is fairer and harder than Connect5, the classic puzzle game.</p>
+<p>I pick connect6 as the project because there is a competition called <a href="http://www.caaigames.cn/">University Computer Games Championship</a>. Connect6 is the required event in this competition.</p>
+<p>I first adapted the road repesentation mechanism into the programming framework, then using temporal difference learning algorithm to adjust weights of evaluation function. After 3 days training, the new weight sets outperforms the old one, which is an amazing result.</p>
+<p>I also share this game with my friends, most of them found it quite interesting and not so easy to defeat our robot.</p>
+<p>Here is my paper:<a href="http://www.findshine.com/doc/connect6.pdf">&lt;Temporal Diffrence Learning Algorithm Based on Road of Connect6 Game&gt;</a></p>
+<p>Key technologies used in this project: <tt>C++(with Qt framework)</tt>.</p>
+<p>Software Download:<a href="http://www.findshine.com/downloads/connect6.zip">UESTC-Connect6</a></p>
+</td></tr></table>
+<h2>UESTC Time Tree </h2>
+<p><i>Software Engineering Project (Nov 18th, 2012)</i></p>
+<table class="imgtable"><tr><td>
+<img src="image/timetree.jpg" alt="TimeTree" width="440px" />&nbsp;</td>
+<td align="left"><p>It is a Campus-Info-Share application, Like <a href="http://event.cs50.net">HarvardEvents</a>.</p>
+<p>We extract recent to-be-hold event from the <i>XLS</i> form document that is released by UESTC Student Union, and store them into our database for students to retrieve needed events, as well as share events to their social network service like <i>Qzone, Weibo, Renren</i>, etc.</p>
+<p>Key technologies used in this project: <tt>PHP/SQL/CSS/Javascript/Python</tt>.</p>
+<p>We make these site as our project of Software Engineering Class, and we get Rank 1/17 in the whole class.</p>
+<p>More info you can see in my blog:<a href="http://www.wytk2008.net/programing/772/">软件工程也好玩</a></p>
+</td></tr></table>
+<h2>Xianyu Facemash</h2>
+<p><i>My first Web application (June 26th, 2012)</i></p>
+<table class="imgtable"><tr><td>
+<img src="image/facemash.jpg" alt="TimeTree" width="440px" />&nbsp;</td>
+<td align="left"><p>It is a <b>&ldquo;hot or not&rdquo;</b> game which allows visitors to compare two student pictures side-by-side and let them choose who was &ldquo;hot&rdquo; and who was &ldquo;not&rdquo;. Which is initially produced by Mark Zuckerberg, as the Facebook's predecessor.</p>
+<p>Key concept of this game is called <b><a href="http://en.wikipedia.org/wiki/Elo_rating_system">Elo rating system</a></b>, it is a method for calculating the relative skill level of players in competitor-versus-competitor games such as chess.  Here is the equations:</p>
+<p><img class="eq" src="eqs/6400039897519051837-130.png" alt=" Ea = frac{1}{1+10^{(Rb-Ra)/400}}" style="vertical-align: -9px" /></p>
+<p><img class="eq" src="eqs/3261084041625194062-130.png" alt=" Eb = frac{1}{1+10^{(Ra-Rb)/400}}" style="vertical-align: -9px" /></p>
+<p>Ex is the expected probability that X will win the match. Ea + Eb = 1. Rx is the rating of X, which changes after every match. That is:</p>
+<p><img class="eq" src="eqs/9164758910012540302-130.png" alt=" Rx = Rx(old) + K * (Wx - Ex)" style="vertical-align: -5px" /></p>
+<p>where Wx = 1 if x wins and Wx = 0 if x loses, K is a constant number to control the change rate.</p>
+<p><a href="http://www.wytk2008.net/facemash/index.php">DEMO</a></p>
+<p>Key technologies used in this project: <tt>PHP/SQL/CSS</tt>.</p>
+</td></tr></table>
+<div id="footer">
+<div id="footer-text">
+Page generated 2013-09-05 16:08:31 CST, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>
