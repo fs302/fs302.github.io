@@ -177,7 +177,7 @@ $(document).ready(function(){
         }
     })();
 
-    $.getScript('/js/prettify/prettify.js',function(){
+    $.getScript('/blog/js/prettify/prettify.js',function(){
         prettyPrint();
     });
 
