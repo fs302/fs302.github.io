@@ -5,10 +5,10 @@ layout: home
 <div class="index-content shine">
     <div class="section">
         <ul class="artical-cate">
-            <li><a href="/"><span>Tech</span></a></li>
-            <li><a href="/life"><span>Life</span></a></li>
-            <li><a href="/project"><span>Project</span></a></li>
-			<li class="on"><a href="/shine"><span>Shine</span></a></li>
+           <li class="on"><a href="/blog"><span>Tech</span></a></li>
+            <li><a href="/blog/life"><span>Life</span></a></li>
+            <li><a href="/blog/project"><span>Project</span></a></li>
+            <li><a href="/blog/shine"><span>Shine</span></a></li>
         </ul>
 
         <div class="cate-bar"><span id="cateBar"></span></div>

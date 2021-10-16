@@ -5,5 +5,6 @@ permalink: /blog/:year/:month/:day/:title.html
 
 title: FindShine
 url: http://www.findshine.com/blog/
-feed: /blog/atom.xml
+feed: blog/atom.xml
 author_info: <a href="http://findshine.com/">FanShen</a>
+layouts_dir: blog/_layouts
