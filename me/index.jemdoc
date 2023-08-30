@@ -1,41 +1,37 @@
-# jemdoc: menu{MENU}{index.html}
+# jemdoc: menu{MENU}{index.html}, addcss{person.css}, showsource
 = Shen Fan(范深)
 [http://findshine.com/me/index.html Home Page]([ofanshen@gmail.com])
 
 ~~~
 {}{img_left}{image/FS-201403-m.jpg}{ShenFan}{192}{192}{IMGLINKTARGET}
 
-I am an Algorithm Engineer, at [https://www.alibabagroup.com/cn/global/home Alibaba Group], Since 2014.\n
+I am a Staff Algorithm Engineer, at [https://www.alibabagroup.com/cn/global/home Alibaba Group].\n\n
 
 Graduated from School of Computer Science and Engineering,\n
-[http://www.oice.uestc.edu.cn/en/ University of Electronic Science and Technology of China(UESTC)],\n
-Chengdu, Sichuan, P.R.China.\n\n
+[http://www.oice.uestc.edu.cn/en/ University of Electronic Science and Technology of China(UESTC)],Chengdu, Sichuan, P.R.China. \nSupervised by [https://baike.baidu.com/item/%E5%91%A8%E6%B6%9B/5230423 Prof.Tao Zhou].\n\n
 
-- [http://weibo.com/wytk2008 Weibo]
-- [http://www.linkedin.com/in/fanshen/ LinkedIn]
-- [https://www.facebook.com/fanshen.fs Facebook]
+My expertise lies in *network analysis* and *graph mining*, especially in user modeling, recommendation.\n
+
+*Email*: ofanshen at gmail.com
 
 ~~~
 
-== Research Interests
-- Network Science: Social Network Mining, Network Representation, Community Detection
-- Statistical Learning, Reinforcement Learning (e.g. Bandit)
 
-== Skills
-- Algorithm design, analysis and implementation
--- Familiar in ACM/ICPC-level algorithmic problem-solving.
--- Experienced with implementing algorithms based on textbooks and research papers.
-- Programming Skills
--- Proficient in: *Java\/Python*
--- Experienced in: *C\/C\+\+\/R\/JavaScript*
--- Familiar with: *Vim\/LaTeX*
-- General Skills
--- Quick /learning/ and /problem-solving/ ability under a certain goal.
--- Excellent /presentation/ ability in expressing prefessional ideas.
--- Efficient /organizing/ ability of a workshop or an activity.
+== Research Interests
+- *Graph Mining*: Link Prediction, Community Detection and Large-Scale Graph Pretrain
+- *User Modeling*: Social Recommendation, User Growth
+
+== Experiences
+*2017.08\~Now Alibaba Data, Hangzhou.*
+- Lead an algorithm engineer team to develop cross-platform user identification and linking system, aka, OneID.
+- R&D on large-scale social network and its applications in social recommendation, user growth and marketing.
+- R&D on AI4System, build large foundation models on meta-graph of massive data flow to optimize offline-database(ODPS) management.
+
+*2014.03\~2017.08 Tmall Tech, Hangzhou.*
+- Develop item sales prediction and online personalized product ranking algorithms
+- Delelop Topic-based Recommendation System
 
 == Contact
-- Email
--- ofanshen (AT) gmail.com
-- Address
--- Wenyixi Road 969, Yuhang District, Hangzhou, Zhejiang, P.R. China,
+- [http://weibo.com/wytk2008 Weibo]
+- [http://www.linkedin.com/in/fanshen/ LinkedIn]
+- [https://www.facebook.com/fanshen.fs Facebook]
