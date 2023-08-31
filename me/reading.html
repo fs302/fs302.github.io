@@ -1,26 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<link rel="stylesheet" href="jemdoc.css" type="text/css" />
-<link rel="stylesheet" href="person.css" type="text/css" />
-<title>Reading </title>
+<link rel="stylesheet" href="www/main.css" type="text/css" />
+<link rel="stylesheet" href="www/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="www/nomenu.css" type="text/css" />
+<!--- <title>Reading </title> --->
+<title>FindShine</title>
+<!-- MathJax -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async>
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
 </head>
-<body>
-<table summary="Table for page layout." id="tlayout">
-<tr valign="top">
-<td id="layout-menu">
-<div class="menu-category">FindShine</div>
-<div class="menu-item"><a href="index.html">Main</a></div>
-<div class="menu-item"><a href="projects.html">Projects</a></div>
-<div class="menu-item"><a href="reading.html" class="current">Reading</a></div>
-</td>
-<td id="layout-content">
+    <div id="layout-content"> <!-- nomenu  -->
 <div id="toptitle">
 <h1>Reading </h1>
-<div id="subtitle"><a href="http://findshine.com/me/index.html">Home Page</a>(<a href="mailto:ofanshen@gmail.com">ofanshen@gmail.com</a>)</div>
+<div id="subtitle"><a href="index.html" target=&ldquo;blank&rdquo;>Home Page</a>(<a href="mailto:ofanshen@gmail.com" target=&ldquo;blank&rdquo;>ofanshen@gmail.com</a>)</div>
 </div>
 <p>Book readings.</p>
 <h2>2023</h2>
@@ -295,20 +298,36 @@
 <li><p>《站着说话不腰疼》 房西苑</p>
 </li>
 </ol>
+</div> <!-- <div id="layout-content"> -->
+<div id="footer-container">
 <div id="footer">
 <div id="footer-text">
-Page generated 2023-08-31 11:41:52 CST, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
-(<a href="reading.jemdoc">source</a>)
-</div>
-</div>
-</td>
-</tr>
-</table>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-53245434-1"></script>
+Last edited  on 2023-08-31 16:11:50 CST. </br>
+</div> <!-- <div id="footer-text"> -->
+</div> <!-- <div id="footer"> -->
+</div> <!-- <div id="footer-container"> -->
+    <div> <!-- nomenulastbit to counteract  <div id="layout">  -->
+    </div> <!--- <div id="layout"> --->
+</div> <!--- <div id="main-container"> --->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-53245434-1');
+function openNav() {
+if (window.innerWidth <= 1200) {
+document.getElementById("layout-menu").style.width = "200px";
+document.getElementById("layout-content-container").style.marginLeft = "200.8px";
+document.getElementById("layout-content-container").style.position = "fixed";
+}
+}
+function closeNav() {
+if (window.innerWidth <= 1200) {
+document.getElementById("layout-menu").style.width = "0";
+document.getElementById("layout-content-container").style.position = "static";
+document.getElementById("layout-content-container").style.marginLeft = "0px";
+setInterval(
+function(){ location.reload() },
+500
+);
+}
+}
 </script>
+</body>
+</html>
