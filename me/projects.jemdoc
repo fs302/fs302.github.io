@@ -1,82 +1,31 @@
-# jemdoc: menu{MENU}{projects.html}
+# jemdoc: menu{MENU}{projects.html}, addcss{person.css}, showsource
 = Projects 
 
-== UDP FileSystem with flash transmit
-/A Training project in my internship at Tencent (Augest 27th, 2013)/
-
+== One-World: Large-Scale Heterogenerous Graph in E-Commerce Platform
 ~~~
-{}{img_left}{image/UDP_filesystem.png}{UDP_filesystem}{440}{}{}
+{}{img_left}{image/tri-level-id-network.png}{TriID}{512}{218}
+/*Related Techniques*: Link Prediction, Community Detection/
 
-A filesystem support basic downloads\/show directory\/upload methods. While in upload process, server can detect same file(with the same md5) in the server and using flash transmit to stop transmition in the network.
+Graph is a powerful system to model the heterogenerous connections and interactions on online-shopping platform.\n
 
-Key technologies used in this project: +C+.
+In order to gain a deeper understanding of our customers, we propose a tri-level identity resolution approach known as 'Device-Person-Household'.\nLink prediction techniques like Resource-Allocation([https://arxiv.org/abs/0901.0553 Zhou et al., EPJ'09]) and SEAL([https://arxiv.org/abs/1802.09691 Zhang et al., NeuIPS'18]) are employed to establish missing connections and classify relations, resulting in an impressive collection of over 100 billion social relations with tagged labels. \n
 
-Code stored in github: [http://github.com/fs302/FileServer http:\/\/github.com\/fs302\/FileServer]
+*Datasets and Codes*:\[[https://github.com/fs302/EasyLink EasyLink]\]
 
-Test report:[http://www.findshine.com/doc/UDP_filesystem.pdf UDP_FileSystem]
 
 ~~~
 
-== UESTC-Connect6 game
-/Students Research Funds of UESTC, In Collaboration with Yong-jun Lee, advised by Prof.Hui Gao (Dec 18th, 2012)/
+== InfoNet: Modeling Information Diffusion in Social Networks
+~~~
+{}{img_left}{image/taocode.png}{TaoCode}{512}{277}
+
+/*Related Techniques*: Graph Neural Networks, Social Recommendation/
+
+We have developed extensive social and knowledge graphs to comprehensively understand the relationships among device-user, user-user, item-item, and user-item. These graphs are leveraged to enhance recommendation algorithms and improve demand-side operations.
+
+Our research has demonstrated that social relations on Taobao exhibit homophily, which can serve as an additional data source for *user behavior modeling* ([https://arxiv.org/abs/2112.14446 Huang et al., SIGIR'21]) and *item sales modeling* ([https://arxiv.org/abs/2203.14807 Yang et al., TKDE'22]). \n
+
+To further boost the power of social relations in the recommendation, we employ *graph structure learning(GSL)* techniques on the social graph to generate superior recommendations for inactive users.\[To Appear\] \n
+
 
 ~~~
-{}{img_left}{image/connect6.jpg}{Connect6}{440}{}{}
-[http://en.wikipedia.org/wiki/Connect6 Connect6] was introduced in 2003 by Professor I-Chen Wu at Taiwan. It is fairer and harder than Connect5, the classic puzzle game.
-
-I pick connect6 as the project because there is a competition called [http://www.caaigames.cn/ University Computer Games Championship]. Connect6 is the required event in this competition.
-
-I first adapted the road repesentation mechanism into the programming framework, then using temporal difference learning algorithm to adjust weights of evaluation function. After 3 days training, the new weight sets outperforms the old one, which is an amazing result.
-
-I also share this game with my friends, most of them found it quite interesting and not so easy to defeat our robot.
-
-Here is my paper:[http://www.findshine.com/doc/connect6.pdf <Temporal Diffrence Learning Algorithm Based on Road of Connect6 Game>]
-
-Key technologies used in this project: +C\+\+(with Qt framework)+.
-
-Software Download:[http://www.findshine.com/downloads/connect6.zip UESTC-Connect6]
-~~~
-
-== UESTC Time Tree 
-/Software Engineering Project (Nov 18th, 2012)/
-
-~~~
-{}{img_left}{image/timetree.jpg}{TimeTree}{440}{}{}
-
-It is a Campus-Info-Share application, Like [http://event.cs50.net HarvardEvents].
-
-We extract recent to-be-hold event from the /XLS/ form document that is released by UESTC Student Union, and store them into our database for students to retrieve needed events, as well as share events to their social network service like /Qzone, Weibo, Renren/, etc.
-
-Key technologies used in this project: +PHP\/SQL\/CSS\/Javascript\/Python+.
-
-We make these site as our project of Software Engineering Class, and we get Rank 1/17 in the whole class.
-
-More info you can see in my blog:[http://www.wytk2008.net/programing/772/ 软件工程也好玩]
-~~~
-
-== Xianyu Facemash
-/My first Web application (June 26th, 2012)/
-
-~~~
-{}{img_left}{image/facemash.jpg}{TimeTree}{440}{}{}
-
-It is a *"hot or not"* game which allows visitors to compare two student pictures side-by-side and let them choose who was "hot" and who was "not". Which is initially produced by Mark Zuckerberg, as the Facebook's predecessor.
-
-Key concept of this game is called *[http://en.wikipedia.org/wiki/Elo_rating_system Elo rating system]*, it is a method for calculating the relative skill level of players in competitor-versus-competitor games such as chess.  Here is the equations:
-
-    $ Ea = \frac{1}{1+10^{(Rb-Ra)/400}}$
-
-    $ Eb = \frac{1}{1+10^{(Ra-Rb)/400}}$
-
-Ex is the expected probability that X will win the match. Ea + Eb = 1. Rx is the rating of X, which changes after every match. That is:
-
-    $ Rx = Rx(old) + K * (Wx - Ex)$
-
-where Wx = 1 if x wins and Wx = 0 if x loses, K is a constant number to control the change rate.
-
-[http://www.wytk2008.net/facemash/index.php DEMO]
-
-Key technologies used in this project: +PHP\/SQL\/CSS+.
-~~~
-
-
