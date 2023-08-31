@@ -9,4 +9,5 @@ Thanks to [jemdoc+new design](https://github.com/szl2/jemdoc-new-design/tree/mas
 
 ## Usage
 ./jemdoc.sh
+
 `./new_design_jemdoc.py -c new_design_mysite.conf *.jemdoc`

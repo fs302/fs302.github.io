@@ -1,13 +1,13 @@
 # jemdoc: nomenu, addcss{www/nomenu.css}
 = Shen Fan(范深)
-[index.html Home Page]([ofanshen@gmail.com])
+[index.html Home Page]
 
 ~~~
 {}{img_left}{image/FS-201403-m.jpg}{ShenFan}{192}{192}
 
 I am a Staff Algorithm Engineer, at [https://www.alibabagroup.com/cn/global/home Alibaba Group].\n
 
-Graduated from School of Computer Science and Engineering,\n
+Graduated from School of Computer Science and Engineering,
 [http://www.oice.uestc.edu.cn/en/ University of Electronic Science and Technology of China(UESTC)], Chengdu, Sichuan, P.R.China. Supervised by [https://baike.baidu.com/item/%E5%91%A8%E6%B6%9B/5230423 Prof.Tao Zhou].\n
 
 My expertise lies in *network analysis* and *graph mining*, especially in user modeling, recommendation.\n
