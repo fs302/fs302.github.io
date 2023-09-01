@@ -32,7 +32,8 @@ body .hide{display:none;}
 
 
 /***********default settings**********/
-body {font-family: "微软雅黑","Arial","Helvetica","sans-serif";font-size:16px;}
+body {font-family: Helvetica, Tahoma, Arial, 'Hiragino Sans GB', 'Microsoft YaHei', "微软雅黑","Arial","Helvetica","sans-serif";
+    font-size:16px;}
 a {color:#4A75B5;text-decoration:none;outline:none;}
 a:hover {text-decoration:underline}
 a.external {padding-right:13px;background:url('/images/icons.gif') no-repeat right 1px;}
@@ -84,16 +85,16 @@ pre ol{margin-left:25px;list-style-type:decimal;}
     background-position:50% 50%;
 }
 .tech .aside{
-    background-image:url('http://findshine.qiniudn.com/tech.jpg');
+    background-image:url('http://www.findshine.com/blog/images/tech.jpg');
 }
 .life .aside{
-    background-image:url('http://findshine.qiniudn.com/life.jpeg');
+    background-image:url('http://www.findshine.com/blog/images/life.jpeg');
 }
 .project .aside{
-    background-image:url('http://findshine.qiniudn.com/project.jpeg')
+    background-image:url('http://www.findshine.com/blog/images/project.jpeg')
 }
 .shine .aside{
-    background-image:url('http://findshine.qiniudn.com/shine.jpg')
+    background-image:url('http://www.findshine.com/blog/images/shine.jpg')
 }
 .index-content .section { margin-left:30%; padding-top:80px; padding-right:15%; ;}
 
