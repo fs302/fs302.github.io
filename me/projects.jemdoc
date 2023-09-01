@@ -1,32 +1,31 @@
-# jemdoc: nomenu, addcss{www/nomenu.css}
-= Projects 
-[index.html Home Page]([ofanshen@gmail.com])
+# jemdoc: nomenu, addcss{www/nomenu.css}, notime
 
-== One-World: Large-Scale Heterogenerous Graph in E-Commerce Platform
+=== One-World: Multi-level cross-platform user identification in E-Commerce Platform
 ~~~
 {}{img_left}{image/tri-level-id-network.png}{TriID}{400}{}
 /*Related Techniques*: Link Prediction, Community Detection/
 
-Graph is a powerful system to model the heterogenerous connections and interactions on online-shopping platform.\n
+Real-world graphs often exhibit noise and incompleteness due to limitations in data collection.\n
 
-In order to gain a deeper understanding of our customers, we propose a tri-level identity resolution approach known as 'Device-Person-Household'.\nLink prediction techniques like Resource-Allocation([https://arxiv.org/abs/0901.0553 Zhou et al., EPJ'09]) and SEAL([https://arxiv.org/abs/1802.09691 Zhang et al., NeuIPS'18]) are employed to establish missing connections and classify relations, resulting in an impressive collection of over 100 billion social relations with tagged labels. \n
+In order to gain a deeper understanding of our users, we propose a tri-level identity resolution approach known as 'Device-Person-Household', supporting for a accurate targeting and effective user engagement strategy.\n 
+
+Link prediction techniques like CN, AA, RA([https://arxiv.org/abs/0901.0553 Zhou et al., EPJ'09]) and SEAL([https://arxiv.org/abs/1802.09691 Zhang et al., NeuIPS'18]) are employed to establish missing connections and classify relations. \n
 
 *Datasets and Codes*:\[[https://github.com/fs302/EasyLink EasyLink]\]
 
-
 ~~~
 
-== InfoNet: Modeling Information Diffusion in Social Networks
+=== InfoNet: Modeling Information Diffusion in Social Networks
 ~~~
 {}{img_left}{image/taocode.png}{TaoCode}{400}{}
 
 /*Related Techniques*: Graph Neural Networks, Social Recommendation/
 
-We have developed extensive social and knowledge graphs to comprehensively understand the relationships among device-user, user-user, item-item, and user-item. These graphs are leveraged to enhance recommendation algorithms and improve demand-side operations.
+We have build extensive social network to comprehensively understand the relationships among users. 
 
-Our research has demonstrated that social relations on Taobao exhibit homophily, which can serve as an additional data source for *user behavior modeling* ([https://arxiv.org/abs/2112.14446 Huang et al., SIGIR'21]) and *item sales modeling* ([https://arxiv.org/abs/2203.14807 Yang et al., TKDE'22]). \n
+Our research has demonstrated that social relations on Taobao exhibit homophily(the tendency of individuals to associate and bond with similar others), which can serve as an additional data source for *user behavior modeling* ([https://arxiv.org/abs/2112.14446 Huang et al., SIGIR'21]) and *item sales modeling* ([https://arxiv.org/abs/2203.14807 Yang et al., TKDE'22]). \n
 
-To further boost the power of social relations in the recommendation, we employ *graph structure learning(GSL)* techniques on the social graph to generate superior recommendations for inactive users.\[To Appear\] \n
-
+To further boost the power of social relations in the recommendation, we employ *graph structure learning(GSL)* techniques on the social graph to generate superior recommendations for inactive users.\[Comming Soon\]\n
 
 ~~~
+

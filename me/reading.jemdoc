@@ -1,4 +1,4 @@
-# jemdoc: nomenu, addcss{www/nomenu.css}
+# jemdoc: nomenu, notime, addcss{www/nomenu.css}
 = Reading 
 [index.html Home Page]
 
