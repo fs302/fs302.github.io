@@ -1,11 +1,11 @@
 ---
 layout: post
 title: 图学习之链路预测模型总结
-description: 将 GNN 链路预测模型分成 Node-Based、SubGraph-Based、Path-Based 三类进行简单总结，方便检索和参考。
+description: 将 GNN 链路预测模型分成 Node-Based、Subgraph-Based、Propagation 三类，简要总结每种方法的特点，方便检索和参考。
 category: tech
 ---
 
-# Node-Based
+## Node-Based
 
 ### Node2Vec/MetaPath2Vec
 
@@ -39,7 +39,7 @@ $$f_r({h}, {t})=\left\|{w}_r^{\mathbf{1}} \circ {h}+{b}_r-{w}_r^{\mathbf{2}} \ci
 
 ComHG[11] 即 Combining link Heuristics and the GNN，这个模型简单地融合了启发式的链路预测指标和节点粒度的 GCN，使得模型同时具备了刻画结构相似性和内容相似性的能力。在 OGB 的几个数据集上表现都不菲，优于 SEAL 和 SUREL。作者特别强调了 ComHG 在计算上很友好，因为它能同时兼顾节点 GNNs 的高效和启发式指标的快速计算。
 
-# Subgraph-Based
+## Subgraph-Based
 
 ### SEAL [NeuIPS2018]
 
@@ -97,7 +97,7 @@ ScaLed[9] 是对 SEAL 在运行效率上的改进，其主要贡献是利用 Ran
 
 这是 Twitter Graph ML 团队的工作，作者声称解决了 GNN 在链路预测问题上的几个困难问题。文章[10]中对 SEAL 等 SGNN 进行了消融实验分析，提出了 ELPH (Efficient Link Prediction with Hashes) & BUDDY，其中 ELPH 是一个 MPNN 模型，通过将子图速写（sketches）传导到消息中，使得模型可以更好预估高阶关联关系，且拥有和 GCN 一样的效率。而 BUDDY 则是进一步将 ELPH 的 hash 过程预处理，从而可以用在更大规模的图上。
 
-# Propagation
+## Propagation
 
 ### PaGNN [PKDD2021]
 
