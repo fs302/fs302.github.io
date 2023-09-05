@@ -1,7 +1,7 @@
 auto: true
 
 paginate: 8
-permalink: /blog/:year/:month/:day/:title.html
+permalink: /blog/:title.html
 
 title: FindShine
 url: http://www.findshine.com/blog/
