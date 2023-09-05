@@ -2,7 +2,7 @@
 layout: post
 title: 读《你和你的研究》摘录
 category: life
-description: 一个人只有一次生命，为什么不做一件你认为伟大的事
+description: 一个人只有一次生命，为什么不做一件你重大的事
 published: true
 
 ---
