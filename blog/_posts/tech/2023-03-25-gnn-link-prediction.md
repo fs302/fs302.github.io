@@ -9,13 +9,13 @@ category: tech
 
 ### Node2Vec/MetaPath2Vec
 
-![n2v](/images/gnnlink/n2v.png)
+![n2v](images/gnnlink/n2v.png)
 
 Transductive 图表征算法，基于同构图或异构图结构，将相连的节点映射到相似的向量空间。由于表征信息主要是基于路径可达、结构相似，该方法生成的表征对于结构依赖性较高的网络会有更好的链路预测效果。
 
 ### GCN/R-GCN
 
-![GCN](/images/gnnlink/gcn.png)
+![GCN](images/gnnlink/gcn.png)
 
 Inductive 节点表征模型，基于节点对的邻居信息得到两个节点的表征后，融合两个表征向量来计算链接的形成概率。以 GAE(Graph AutoEncoder) 为例：
 
@@ -25,7 +25,7 @@ $$\widehat{A}_{i, j}=\sigma\left(z_i^T z_j\right), \text { where } z_i=Z_i, Z=G 
 
 ### LinearRE
 
-![LinearRE](/images/gnnlink/LinearRE.png)
+![LinearRE](images/gnnlink/LinearRE.png)
 
 LineaRE[3]（Linear Regression Embedding）模型适用于 Knowledge Graph 上的 link prediction，其理论是将关系看作原实体与目标实体间的 linear mapping，学习 linear regrassion的权重，得到一个关系打分模型：
 
@@ -35,7 +35,7 @@ $$f_r({h}, {t})=\left\|{w}_r^{\mathbf{1}} \circ {h}+{b}_r-{w}_r^{\mathbf{2}} \ci
 
 ### ComHG [ICLR2023]
 
-![ComHG](/images/gnnlink/ComHG.png)
+![ComHG](images/gnnlink/ComHG.png)
 
 ComHG[11] 即 Combining link Heuristics and the GNN，这个模型简单地融合了启发式的链路预测指标和节点粒度的 GCN，使得模型同时具备了刻画结构相似性和内容相似性的能力。在 OGB 的几个数据集上表现都不菲，优于 SEAL 和 SUREL。作者特别强调了 ComHG 在计算上很友好，因为它能同时兼顾节点 GNNs 的高效和启发式指标的快速计算。
 
@@ -43,7 +43,7 @@ ComHG[11] 即 Combining link Heuristics and the GNN，这个模型简单地融�
 
 ### SEAL [NeuIPS2018]
 
-![SEAL](/images/gnnlink/SEAL.png)
+![SEAL](images/gnnlink/SEAL.png)
 
 SEAL[1] 是为链路预测任务量身定制的 GNN 算法框架，目标是预测 (u,v) 是否存在 Missing Link 或者 Future Link，其核心可以拆分成 3 个主要模块：
 
@@ -55,7 +55,7 @@ SEAL[1] 是为链路预测任务量身定制的 GNN 算法框架，目标是预�
 
 ### GraIL [ICML2020]
 
-![GraIL](/images/gnnlink/GraIL.png)
+![GraIL](images/gnnlink/GraIL.png)
 
 GraIL[2] 是 SEAL 在知识图谱或异构图上的一种扩展，目标是判断 (u,v) 是否存在 r 类型的关系，其与 SEAL 的主要区别是 enclosing subgraph 部分采用了两个节点 n-hop 邻居的交集而非并集。同时，GraIL 的打分模块更综合，融合了子图 Embedding、源节点 u 的 Embedding、目标节点 v 的 Embedding 和边特征 Embedding，即：
 
@@ -63,13 +63,13 @@ $$\operatorname{score}\left(u, r_t, v\right)=\mathbf{W}^T\left[\mathbf{h}_{\math
 
 ### LGLP [TPAMI2020]
 
-![LGLP](/images/gnnlink/LGLP.png)
+![LGLP](images/gnnlink/LGLP.png)
 
 LGLP[4] 参考 SEAL 的一个变体，在子图抽取和节点标记之后，将子图点边转换，变换成 Line Graph 后直接用 GCN 的点分类来建模边的似然性。这个方法相比直接把全图做 Line Graph 的好处是点边转换后的规模膨胀不那么明显！作者在万级节点的小数据集上测试，效果优于 SEAL。
 
 ### SUREL [VLDB2022]
 
-![SUREL](/images/gnnlink/SUREL.png)
+![SUREL](images/gnnlink/SUREL.png)
 
 SUREL[7] 是 SEAL 原作者在工程优化上做的一次尝试，主要思路是将节点的位置编码前置到预处理过程，当 Query {u,v} 提交时，只需要进行一个简单的特征提取后接一个简单的 NN 即可得到 link 评分。由于预处理可以并行化，SUREL 比 SEAL 快 10 倍以上，当 p=16 时，最快可以提升 5000 倍 (36h->26s)。
 
@@ -77,7 +77,7 @@ SUREL[7] 是 SEAL 原作者在工程优化上做的一次尝试，主要思路�
 
 ### WalkPool [ICLR2022]
 
-![WalkPool](/images/gnnlink/WalkPool.png)
+![WalkPool](images/gnnlink/WalkPool.png)
 
 WalkPool[8] 继续延续了 SEAL 的子图提取后做图分类的思路，而与 SEAL 对节点做重要性标记不同的是，WalkPool 在特征构建过程中基于子图的条件转移概率矩阵 P 生成了大量启发式的结构特征（统称为 Walk-Profiles），作者称其为可训练的启发式模型（Trainable Heuristics），取得了优于 SEAL 的预测效果。
 
@@ -87,13 +87,13 @@ $$\mathrm{WP}_\theta(G, \mathbf{Z})=\left[\omega_{1,2},\left(\text { node }^{\ta
 
 ### ScaLed [CIKM2022]
 
-![ScaLed](/images/gnnlink/ScaLed.png)
+![ScaLed](images/gnnlink/ScaLed.png)
 
 ScaLed[9] 是对 SEAL 在运行效率上的改进，其主要贡献是利用 RandomWalk 对 (u,v) 周边子图进行采样，使得运行时间相比 SEAL 降低一半以上。
 
 ### ELPH [ICLR2023]
 
-![ELPH](/images/gnnlink/ELPH.png)
+![ELPH](images/gnnlink/ELPH.png)
 
 这是 Twitter Graph ML 团队的工作，作者声称解决了 GNN 在链路预测问题上的几个困难问题。文章[10]中对 SEAL 等 SGNN 进行了消融实验分析，提出了 ELPH (Efficient Link Prediction with Hashes) & BUDDY，其中 ELPH 是一个 MPNN 模型，通过将子图速写（sketches）传导到消息中，使得模型可以更好预估高阶关联关系，且拥有和 GCN 一样的效率。而 BUDDY 则是进一步将 ELPH 的 hash 过程预处理，从而可以用在更大规模的图上。
 
@@ -101,7 +101,7 @@ ScaLed[9] 是对 SEAL 在运行效率上的改进，其主要贡献是利用 Ran
 
 ### PaGNN [PKDD2021]
 
-![PaGNN](/images/gnnlink/PaGNN.png)
+![PaGNN](images/gnnlink/PaGNN.png)
 
 PaGNN[5] 模型包含两个主要的操作：broadcasting操作和aggregation操作。第一步，对于需要预测的链路中的两个节点，broadcasting操作从其中一个节点出发，将节点特征传播到与其相连的直接邻居，并融合直接邻居和传播边上的信息。第二步，需要通过aggregation操作，将邻居信息聚合到链路中的另一个节点中，与之前GNN的aggregation操作相比，除了需要聚合邻居本身的信息，还需要聚合之前broadcasting操作生成的信息。
 
@@ -111,7 +111,7 @@ $$\mathbf{s}_{u, v}=\left[\mathbf{r}_{u, v}^H, \mathbf{r}_{v, u}^H\right] $$
 
 ### NBFNet [NeurIPS2021]
 
-![NBFNet](/images/gnnlink/NBFNet.png)
+![NBFNet](images/gnnlink/NBFNet.png)
 
 NBFNet[6] 是 Bellman-Ford的GNN版，通过一次性计算单源节点的 n-hop 邻居表征，利用了局部 cache，相比Pair-wise计算可提升链路预测的效率。作者在文章中提到对于 FB15K-237 数据集，NBFNet 的运行时间是 4 分钟，相比 RGCN 慢 6 倍，但是比 GraIL 快 1 万倍。在同构图上的模型表现与 SEAL 基本一致，在异构图上的表现与 GraIL 基本一致。
 
