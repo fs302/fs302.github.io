@@ -1,4 +1,4 @@
-Online url: https://fs302.github.io/me/index.html
+Online url: https://fs302.github.io/index.html
 
 This is a personal website, extend from jemdoc.
 Thanks to [jemdoc+new design](https://github.com/szl2/jemdoc-new-design/tree/master) for the mobile css.
