@@ -21,7 +21,7 @@ published: true
 > Great scientists tolerate ambiguity very well. 
 > They believe the theory enough to go ahead; they doubt it enough to notice the errors and faults so they can step forward and create the new replacement theory.
 
-伟大的科学家会容忍歧义和混乱，这种平街有利于创。
+伟大的科学家会容忍歧义和混乱，这种平衡有利于创新。
 
 > If you are deeply immersed and committed to a topic, day after day after day, your subconscious has nothing to do but work on your problem.
 > Keep your subconscious starved so it has to work on your problem, so you can sleep peacefully and get the answer in the morning, free.
@@ -47,4 +47,3 @@ published: true
 > When your vision of what you want to do is what you can do single-handedly, then you should pursue it. The day your vision, what you think needs to be done, is bigger than what you can do single-handedly, then you have to move toward management. And the bigger the vision is, the farther in management you have to go.
 
 不要轻易去做管理。只有当你的愿景远大于你个人能完成的水平，再考虑去做管理，让更多人和你一起做事。
-
