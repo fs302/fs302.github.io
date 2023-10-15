@@ -1,4 +1,4 @@
-# jemdoc: nomenu, notime, addcss{www/nomenu.css}
+# jemdoc: nomenu, addcss{www/nomenu.css}, notime, nodate
 = Reading
 [index.html Home Page]
 
@@ -13,6 +13,8 @@ Book readings.
 . 《随椋鸟飞行》 \[意\] 乔治•帕里西
 . 《牛奶可乐经济学》 \[美\]罗伯特·弗兰克
 . 《详谈：李敬泽》 李翔
+. 《海边的卡夫卡》 \[日\] 村上春树
+
 
 == 2022
 . 《棉花帝国》 \[美\]斯文·贝克特

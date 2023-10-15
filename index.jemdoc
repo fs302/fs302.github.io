@@ -1,4 +1,4 @@
-# jemdoc: nomenu, addcss{www/nomenu.css}, notime
+# jemdoc: nomenu, addcss{www/nomenu.css}, notime, nodate
 = Shen Fan(范深)
 [index.html Home Page]
 
@@ -18,8 +18,9 @@ My expertise lies in *network analysis* and *graph mining*, especially in user m
 
 
 == Research Interests
-- *Graph Mining*: Link Prediction, Graph Nerual Networks
-- *AI4X*: AI4Database, AI4Biology
+- *Graph Mining*: Link Prediction, Graph Representation
+- *AGI*: Multimodal Large Language Model, AI Agents
+- *AI4X*: AI4Science, AI4System
 
 == Experiences
 *Alibaba Data, Hangzhou | August 2017 - Present*
