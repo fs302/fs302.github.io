@@ -1,4 +1,4 @@
-# jemdoc: nomenu, addcss{www/nomenu.css}, notime
+# jemdoc: nomenu, addcss{www/nomenu.css}, notime, nodate
 
 === One-World: Multi-level cross-platform user identification in E-Commerce Platform
 ~~~
