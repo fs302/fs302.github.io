@@ -1327,7 +1327,8 @@ def procfile(f):
 
         elif b.startswith('analytics'):
           r = re.compile(r'(?<!\\){(.*?)(?<!\\)}', re.M + re.S)
-          f.analytics = re.findall(r, b)[0]
+          #f.analytics = re.findall(r, b)[0]
+          f.analytics = True
 
         elif b.startswith('title'):
           r = re.compile(r'(?<!\\){(.*?)(?<!\\)}', re.M + re.S)
@@ -1391,7 +1392,9 @@ def procfile(f):
 
 
   if f.analytics:
-    hb(f.outf, f.conf['analytics'], f.analytics)
+    #hb(f.outf, f.conf['analytics'], f.analytics)
+    hb(f.outf, f.conf['analytics'], '')
+
 
   if fwtitle:
     out(f.outf, f.conf['fwtitlestart'])
