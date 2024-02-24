@@ -21,11 +21,9 @@ Link prediction techniques like CN, AA, RA([https://arxiv.org/abs/0901.0553 Zhou
 
 /*Related Techniques*: Graph Neural Networks, Social Recommendation/
 
-We have build extensive social network to comprehensively understand the relationships among users. 
-
 Our research has demonstrated that social relations on Taobao exhibit homophily(the tendency of individuals to associate and bond with similar others), which can serve as an additional data source for *user behavior modeling* ([https://arxiv.org/abs/2112.14446 Huang et al., SIGIR'21]) and *item sales modeling* ([https://arxiv.org/abs/2203.14807 Yang et al., TKDE'22]). \n
 
-To further boost the power of social relations in the recommendation, we employ *graph structure learning(GSL)* techniques on the social graph to generate superior recommendations for inactive users.\[Comming Soon\]\n
+To further boost the power of social relations in the recommendation, we employ *graph structure learning(GSL)* techniques on the social graph to generate superior recommendations for inactive users\[Comming Soon\], and introduce GraphTranslator([https://arxiv.org/abs/2402.07197 Zhang et al., WWW'24]) to conduct *open-ended tasks* on understanding users interests in social context with GNN(Graph Neural Network) and LLM(Large Language Model).\n
 
 ~~~
 
