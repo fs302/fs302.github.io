@@ -1393,8 +1393,7 @@ def procfile(f):
 
   if f.analytics:
     #hb(f.outf, f.conf['analytics'], f.analytics)
-    hb(f.outf, f.conf['analytics'], '')
-
+    out(f.outf, f.conf['analytics'])
 
   if fwtitle:
     out(f.outf, f.conf['fwtitlestart'])
