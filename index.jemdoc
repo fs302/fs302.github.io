@@ -26,11 +26,12 @@ Currently, my interests focus on Multimodal LLMs and AI Agents towards AGI(Artif
 *Alibaba Data, Hangzhou | August 2017 - Present*
 - Lead a team of algorithm engineers in creating a cross-platform user identification and linking system, OneID.
 - Build a large-scale social network and conducted its applications in social recommendation, user growth and marketing.
-- R&D on AI4System, build large foundation models on meta-graph of massive data work-flow to optimize offline-database(ODPS) management.
+- R&D on AI4DB, build large foundation models on meta-graph of massive data work-flow to optimize offline-database(ODPS) management.
+- Develop a robust and effictive LLMOps system for generating image and video captions, essential for the development of multi-modal large language models.
 
 *Tmall Tech, Hangzhou | March 2014 - August 2017*
-- Developed algorithms for item sales prediction and online personalized product ranking.
-- Created a Topic-based Recommendation System.
+- Develop algorithms for item sales prediction and online personalized product ranking.
+- Create a Topic-based Recommendation System.
 
 == Projects 
 #include{projects.jemdoc}
