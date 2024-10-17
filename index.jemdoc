@@ -5,7 +5,7 @@
 ~~~
 {}{img_left}{image/fs_356.jpg}{ShenFan}{192}{192}
 
-I am a Staff Algorithm Engineer, at [https://www.alibabagroup.com/cn/global/home Alibaba Group].\n
+I am a Staff Software Engineer, at [https://www.aboutcoupang.com/ Coupang, Inc]. Previous to Coupang, I worked at Alibaba for 10 years.\n
 
 Graduated from School of Computer Science and Engineering,
 [https://en.uestc.edu.cn/ University of Electronic Science and Technology of China(UESTC)], Chengdu, Sichuan, P.R.China. 
@@ -24,7 +24,7 @@ Currently, my interests focus on Multimodal LLMs and AI Agents towards AGI(Artif
 - *AGI*: Multimodal Large Language Model, AI Agents
 
 == Experiences
-*Alibaba Data, Hangzhou | August 2017 - Present*
+*Alibaba Data, Hangzhou | August 2017 - July 2024*
 - Lead a team of algorithm engineers in creating a cross-platform user identification and linking system, OneID.
 - Build a large-scale social network and conducted its applications in social recommendation, user growth and marketing.
 - R&D on AI4DB, build large foundation models on meta-graph of massive data work-flow to optimize offline-database(ODPS) management.
