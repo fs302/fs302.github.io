@@ -7,8 +7,8 @@
 
 I am a Staff Software Engineer, at [https://www.aboutcoupang.com/ Coupang, Inc]. Previous to Coupang, I worked at Alibaba for 10 years.\n
 
-Graduated from School of Computer Science and Engineering,
-[https://en.uestc.edu.cn/ University of Electronic Science and Technology of China(UESTC)], Chengdu, Sichuan, P.R.China. 
+I graduated from CompleX Lab of Web Science Center, School of Computer Science and Engineering,
+[https://en.uestc.edu.cn/ University of Electronic Science and Technology of China(UESTC)] at 2014, with [https://www.ccf.org.cn/c/2012-10-25/648731.shtml The CCF Outstanding Undergraduate Award]. 
 
 My expertise lies in *network analysis* and *graph mining*, especially in user modeling, recommendation.\n
 
@@ -22,17 +22,6 @@ Currently, my interests focus on Multimodal LLMs and AI Agents towards AGI(Artif
 == Research Interests
 - *Graph Mining*: Link Prediction, Graph Representation, Recommendation
 - *AGI*: Multimodal Large Language Model, AI Agents
-
-== Experiences
-*Alibaba Data, Hangzhou | August 2017 - July 2024*
-- Lead a team of algorithm engineers in creating a cross-platform user identification and linking system, OneID.
-- Build a large-scale social network and conducted its applications in social recommendation, user growth and marketing.
-- R&D on AI4DB, build large foundation models on meta-graph of massive data work-flow to optimize offline-database(ODPS) management.
-- Develop a robust and effictive LLMOps system for generating image and video captions, essential for the development of multi-modal large language models.
-
-*Tmall Tech, Hangzhou | March 2014 - August 2017*
-- Develop algorithms for item sales prediction and online personalized product ranking.
-- Create a Topic-based Recommendation System.
 
 == Projects 
 #include{projects.jemdoc}

@@ -25,5 +25,7 @@ Our research has demonstrated that social relations on Taobao exhibit homophily(
 
 To further boost the power of social relations in the recommendation, we employ *graph structure learning(GSL)* techniques on the social graph to generate superior recommendations for inactive users([https://arxiv.org/abs/2405.05288v1 Liu et al., DASFAA'24]), and introduce GraphTranslator([https://arxiv.org/abs/2402.07197 Zhang et al., WWW'24]) to conduct *open-ended tasks* on understanding users interests in social context with GNN(Graph Neural Network) and LLM(Large Language Model).\n
 
+*Datasets and Codes*:\[[https://github.com/alibaba/GraphTranslator GraphTranslator]\] \[[https://github.com/fs302/LSIR LSIR]\]
+
 ~~~
 
