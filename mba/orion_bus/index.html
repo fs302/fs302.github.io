@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>猎户座投标报价可视化模型</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">ORION BUS · 三层报价模型</p>
+          <h1>投标报价决策仪表盘</h1>
+          <p class="hero-copy">
+            输入一组新合同数据，系统会模拟“中标价预测 → 中标概率预测 → 期望利润优化”，并在最右侧给出推荐报价。
+          </p>
+        </div>
+        <div class="data-badge">
+          <span>真实历史样本</span>
+          <strong>69 条</strong>
+          <small>中标 28 · 失标 41</small>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="panel input-panel">
+          <div class="panel-heading">
+            <span class="step">01</span>
+            <div>
+              <h2>新合同输入</h2>
+              <p>调整参数后点击按钮刷新报价建议</p>
+            </div>
+          </div>
+
+          <form id="contractForm" class="form-grid">
+            <label>
+              车辆数量
+              <input name="quantity" type="number" min="1" value="30" />
+            </label>
+            <label>
+              单车成本
+              <input name="orion_est_cost" type="number" min="1" value="245000" />
+            </label>
+            <label>
+              车型描述
+              <input name="model_raw" type="text" value="40 LF CNG" />
+            </label>
+            <label>
+              车长
+              <select name="bus_length_ft">
+                <option value="30">30 ft</option>
+                <option value="35">35 ft</option>
+                <option value="40" selected>40 ft</option>
+              </select>
+            </label>
+            <label>
+              燃料类型
+              <select name="fuel_type">
+                <option value="D">Diesel</option>
+                <option value="CNG" selected>CNG</option>
+              </select>
+            </label>
+            <label>
+              地板类型
+              <select name="floor_type">
+                <option value="HF">High Floor</option>
+                <option value="LF" selected>Low Floor</option>
+              </select>
+            </label>
+            <label>
+              投标类型
+              <select name="bid_type">
+                <option value="BID">BID</option>
+                <option value="NEG">NEG</option>
+                <option value="EVALUATED">EVALUATED</option>
+                <option value="QUOTE">QUOTE</option>
+                <option value="low_price" selected>low_price</option>
+              </select>
+            </label>
+            <label>
+              地区
+              <select name="region">
+                <option value="West" selected>West</option>
+                <option value="East">East</option>
+                <option value="South">South</option>
+                <option value="North">North</option>
+                <option value="CA">CA</option>
+                <option value="WA">WA</option>
+                <option value="NC">NC</option>
+              </select>
+            </label>
+            <label>
+              年份
+              <input name="bid_year" type="number" value="2004" />
+            </label>
+            <label>
+              月份
+              <input name="bid_month" type="number" min="1" max="12" value="6" />
+            </label>
+            <button type="submit" class="primary-action">生成报价建议</button>
+          </form>
+        </aside>
+
+        <section class="center-column">
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span>预测市场中标价</span>
+              <strong id="marketPrice">--</strong>
+              <small>第一层：市场价格参考</small>
+            </article>
+            <article class="metric-card">
+              <span>推荐报价</span>
+              <strong id="bestBid">--</strong>
+              <small>第三层：期望利润最大</small>
+            </article>
+            <article class="metric-card">
+              <span>预计中标概率</span>
+              <strong id="bestProbability">--</strong>
+              <small>第二层：报价胜率估计</small>
+            </article>
+            <article class="metric-card">
+              <span>期望利润</span>
+              <strong id="bestProfit">--</strong>
+              <small>P(win) × 利润 × 数量</small>
+            </article>
+          </div>
+
+          <article class="panel chart-panel">
+            <div class="panel-heading compact">
+              <span class="step">02</span>
+              <div>
+                <h2>候选报价曲线</h2>
+                <p>金色为期望利润，蓝色为中标概率</p>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <svg id="bidChart" viewBox="0 0 760 320" role="img" aria-label="候选报价曲线"></svg>
+            </div>
+            <div class="legend">
+              <span><i class="dot gold"></i>期望利润</span>
+              <span><i class="dot blue"></i>中标概率</span>
+              <span><i class="dot red"></i>推荐点</span>
+            </div>
+          </article>
+
+          <article class="panel table-panel">
+            <div class="panel-heading compact">
+              <span class="step">03</span>
+              <div>
+                <h2>三种报价目标对比</h2>
+                <p>经营决策优先看期望利润最高报价</p>
+              </div>
+            </div>
+            <div class="comparison" id="comparisonTable"></div>
+          </article>
+        </section>
+
+        <aside class="panel advice-panel">
+          <div class="panel-heading">
+            <span class="step">建议</span>
+            <div>
+              <h2>最右侧报价建议</h2>
+              <p>直接用于汇报的结论区</p>
+            </div>
+          </div>
+
+          <div class="recommendation">
+            <span class="tag">推荐采用</span>
+            <strong id="adviceBid">--</strong>
+            <p id="adviceReason">等待输入数据后生成建议。</p>
+          </div>
+
+          <div class="risk-box">
+            <span>风险等级</span>
+            <strong id="riskLevel">--</strong>
+            <p id="riskText">根据中标概率自动判断。</p>
+          </div>
+
+          <div class="formula-card">
+            <span>模型公式</span>
+            <code>Expected Profit = P(win | bid) × (bid - cost) × quantity</code>
+          </div>
+
+          <ul class="advice-list" id="adviceList"></ul>
+        </aside>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
