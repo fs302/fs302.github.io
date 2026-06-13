@@ -1,6 +1,10 @@
 const form = document.querySelector("#contractForm");
 const chart = document.querySelector("#bidChart");
 
+const state = {
+  bundle: null,
+};
+
 const formatMoney = (value) =>
   new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 0,
@@ -8,7 +12,39 @@ const formatMoney = (value) =>
 
 const formatPercent = (value) => `${(value * 100).toFixed(2)}%`;
 
-const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+function setText(id, text) {
+  document.querySelector(`#${id}`).textContent = text;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function quantile(values, p) {
+  if (!values.length) {
+    return 0;
+  }
+  const sorted = [...values].sort((a, b) => a - b);
+  const index = (sorted.length - 1) * p;
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  if (lower === upper) {
+    return sorted[lower];
+  }
+  const weight = index - lower;
+  return sorted[lower] * (1 - weight) + sorted[upper] * weight;
+}
+
+function normalizeBidType(value) {
+  const map = {
+    BID: "投标",
+    low_price: "投标",
+    NEG: "谈判",
+    EVALUATED: "评估",
+    QUOTE: "报价",
+  };
+  return map[value] || value || "投标";
+}
 
 function readContract() {
   const data = new FormData(form);
@@ -18,83 +54,128 @@ function readContract() {
     bus_length_ft: Number(data.get("bus_length_ft")),
     fuel_type: String(data.get("fuel_type")),
     floor_type: String(data.get("floor_type")),
-    bid_type: String(data.get("bid_type")),
-    region: String(data.get("region")),
+    bid_type: normalizeBidType(String(data.get("bid_type"))),
+    region: String(data.get("region") || "").trim(),
     bid_year: Number(data.get("bid_year")),
     bid_month: Number(data.get("bid_month")),
     orion_est_cost: Number(data.get("orion_est_cost")),
+    competitor_count: Number(data.get("competitor_count")),
+    pricing_goal: String(data.get("pricing_goal") || "profit"),
   };
 }
 
-function predictMarketPrice(contract) {
-  const modelText = contract.model_raw.toUpperCase();
-  let markup = 0.098;
-
-  markup += (contract.bus_length_ft - 30) * 0.0032;
-  markup += contract.fuel_type === "CNG" || modelText.includes("CNG") ? 0.037 : 0;
-  markup += contract.floor_type === "LF" || modelText.includes("LF") ? 0.022 : 0;
-
-  const bidAdjustments = {
-    BID: -0.006,
-    NEG: 0.018,
-    EVALUATED: 0.034,
-    QUOTE: 0.012,
-    low_price: -0.012,
+function parseModelFeatures(contract) {
+  const modelText = (contract.model_raw || "").toUpperCase();
+  const lengthMatch = modelText.match(/(\d{2})/);
+  const busLength = Number.isFinite(contract.bus_length_ft) && contract.bus_length_ft > 0
+    ? contract.bus_length_ft
+    : Number(lengthMatch?.[1] || 0);
+  return {
+    ...contract,
+    bus_length_ft: busLength,
+    floor_type: contract.floor_type || (modelText.includes("LF") ? "LF" : modelText.includes("HF") ? "HF" : "UNK"),
+    fuel_type:
+      contract.fuel_type ||
+      (modelText.includes("CNG")
+        ? "CNG"
+        : modelText.includes("HYB")
+          ? "Hyb"
+          : /\bD\b/.test(modelText)
+            ? "D"
+            : "Other"),
+    has_vi: modelText.includes("VI") ? 1 : 0,
+    has_sub: modelText.includes("SUB") ? 1 : 0,
   };
-
-  const regionAdjustments = {
-    West: 0.011,
-    East: 0.004,
-    South: -0.003,
-    North: 0.002,
-    CA: 0.013,
-    WA: 0.01,
-    NC: -0.004,
-  };
-
-  markup += bidAdjustments[contract.bid_type] || 0;
-  markup += regionAdjustments[contract.region] || 0;
-  markup += (contract.bid_year - 2002) * 0.006;
-  markup += (contract.bid_month - 6) * 0.0008;
-
-  return contract.orion_est_cost * (1 + clamp(markup, 0.045, 0.32));
 }
 
-function predictWinProbability(contract, bidPrice, predictedMarketPrice) {
-  const gap = (bidPrice - predictedMarketPrice) / predictedMarketPrice;
-  const markup = (bidPrice - contract.orion_est_cost) / contract.orion_est_cost;
-  const evaluationBonus = contract.bid_type === "EVALUATED" || contract.bid_type === "NEG" ? 0.055 : 0;
-  const lowPricePenalty = contract.bid_type === "low_price" || contract.bid_type === "BID" ? -0.018 : 0;
-  const complexityPenalty = contract.fuel_type === "CNG" && contract.floor_type === "LF" ? -0.01 : 0;
-  const raw = 1 / (1 + Math.exp(10.5 * gap + 1.7 * markup - 0.16));
+function transformFeatures(preprocessor, row) {
+  const numeric = preprocessor.numeric_features.map((feature, index) => {
+    const raw = Number(row[feature]);
+    const filled = Number.isFinite(raw) ? raw : preprocessor.numeric_medians[index];
+    const scale = preprocessor.numeric_scales[index] || 1;
+    return (filled - preprocessor.numeric_means[index]) / scale;
+  });
 
-  return clamp(raw + evaluationBonus + lowPricePenalty + complexityPenalty, 0.025, 0.92);
+  const categorical = [];
+  preprocessor.categorical_features.forEach((feature, featureIndex) => {
+    const value = String(row[feature] ?? preprocessor.categorical_fill_values[featureIndex]);
+    preprocessor.categorical_levels[featureIndex].forEach((level) => {
+      categorical.push(value === level ? 1 : 0);
+    });
+  });
+
+  return [...numeric, ...categorical];
 }
 
-function buildCandidates(contract, predictedMarketPrice) {
-  const rows = [];
-  const steps = 180;
-  const minMarkup = 0.02;
-  const maxMarkup = 0.35;
+function predictRidge(modelBundle, row) {
+  const features = transformFeatures(modelBundle.preprocessor, row);
+  let prediction = modelBundle.intercept;
+  for (let i = 0; i < features.length; i += 1) {
+    prediction += features[i] * modelBundle.coefficients[i];
+  }
+  return prediction;
+}
 
-  for (let i = 0; i < steps; i += 1) {
-    const markup = minMarkup + ((maxMarkup - minMarkup) * i) / (steps - 1);
-    const bid = contract.orion_est_cost * (1 + markup);
-    const winProbability = predictWinProbability(contract, bid, predictedMarketPrice);
-    const unitProfit = bid - contract.orion_est_cost;
-    const totalProfitIfWin = unitProfit * contract.quantity;
+function predictForestProbability(modelBundle, row) {
+  const features = Float32Array.from(transformFeatures(modelBundle.preprocessor, row));
+  let total = 0;
 
-    rows.push({
+  modelBundle.trees.forEach((tree) => {
+    let node = 0;
+    while (tree.feature[node] >= 0) {
+      node = features[tree.feature[node]] <= tree.threshold[node] ? tree.children_left[node] : tree.children_right[node];
+    }
+    total += tree.prob_class_1[node];
+  });
+
+  return total / modelBundle.trees.length;
+}
+
+function buildDirectCandidates(contract, predictedMarketPrice) {
+  const points = state.bundle.candidate_grid_points || 61;
+  const low = Math.max(contract.orion_est_cost * 1.02, predictedMarketPrice * 0.88);
+  const high = Math.max(low + 1, predictedMarketPrice * 1.12);
+  const candidates = [];
+
+  for (let i = 0; i < points; i += 1) {
+    const bid = low + ((high - low) * i) / (points - 1);
+    const enriched = {
+      ...contract,
+      orion_bid_price: bid,
+      markup_ratio: (bid - contract.orion_est_cost) / contract.orion_est_cost,
+      market_gap_ratio: (bid - predictedMarketPrice) / predictedMarketPrice,
+    };
+    const winProbability = predictForestProbability(state.bundle.win_probability_model, enriched);
+    candidates.push({
       bid_price: bid,
-      markup_ratio: markup,
       win_probability: winProbability,
-      unit_profit: unitProfit,
-      total_profit_if_win: totalProfitIfWin,
-      expected_profit: winProbability * totalProfitIfWin,
+      markup_ratio: enriched.markup_ratio,
+      expected_profit: winProbability * (bid - contract.orion_est_cost) * contract.quantity,
     });
   }
 
-  return rows;
+  return candidates;
+}
+
+function buildReferenceCandidates(contract, predictedReferencePrice) {
+  const residuals = state.bundle.reference_price_model.residuals;
+  const points = state.bundle.candidate_grid_points || 61;
+  const low = Math.max(contract.orion_est_cost * 1.02, predictedReferencePrice * 0.88);
+  const high = Math.max(low + 1, predictedReferencePrice * 1.12);
+  const candidates = [];
+
+  for (let i = 0; i < points; i += 1) {
+    const bid = low + ((high - low) * i) / (points - 1);
+    const winProbability = residuals.filter((residual) => predictedReferencePrice + residual >= bid).length / residuals.length;
+    candidates.push({
+      bid_price: bid,
+      win_probability: winProbability,
+      markup_ratio: (bid - contract.orion_est_cost) / contract.orion_est_cost,
+      expected_profit: winProbability * (bid - contract.orion_est_cost) * contract.quantity,
+    });
+  }
+
+  return candidates;
 }
 
 function pickBest(candidates, field) {
@@ -102,19 +183,52 @@ function pickBest(candidates, field) {
 }
 
 function calculate(contract) {
-  const predictedMarketPrice = predictMarketPrice(contract);
-  const candidates = buildCandidates(contract, predictedMarketPrice);
+  const enriched = parseModelFeatures(contract);
+  const predictedMarketPrice = predictRidge(state.bundle.winning_price_model, enriched);
+  const predictedReferencePrice = predictRidge(state.bundle.reference_price_model.pipeline, enriched);
+
+  const directCandidates = buildDirectCandidates(enriched, predictedMarketPrice);
+  const referenceCandidates = buildReferenceCandidates(enriched, predictedReferencePrice);
+
+  const bestByWinProbability = pickBest(directCandidates, "win_probability");
+  const bestByExpectedProfit = pickBest(directCandidates, "expected_profit");
+  const directFeasible60 = directCandidates.some((item) => item.win_probability >= 0.6);
+
+  const residualQ40 =
+    state.bundle.reference_price_model.residual_q40 ??
+    quantile(state.bundle.reference_price_model.residuals, 0.4);
+  const referenceTargetBid = predictedReferencePrice + residualQ40;
+  const referenceTarget = {
+    bid_price: referenceTargetBid,
+    win_probability: 0.6,
+    markup_ratio: (referenceTargetBid - enriched.orion_est_cost) / enriched.orion_est_cost,
+    expected_profit: 0.6 * (referenceTargetBid - enriched.orion_est_cost) * enriched.quantity,
+  };
+  const referenceBestProfit = pickBest(referenceCandidates, "expected_profit");
+
+  let selected = bestByExpectedProfit;
+  let selectedLabel = "利润优先推荐";
+  if (contract.pricing_goal === "win_probability") {
+    selected = bestByWinProbability;
+    selectedLabel = "市占率优先推荐";
+  } else if (contract.pricing_goal === "target_60_low_price") {
+    selected = referenceTarget;
+    selectedLabel = "价低者得下的 60% 目标报价";
+  }
+
   return {
     predictedMarketPrice,
-    candidates,
-    bestByWinProbability: pickBest(candidates, "win_probability"),
-    bestByExpectedProfit: pickBest(candidates, "expected_profit"),
-    bestByMargin: pickBest(candidates, "markup_ratio"),
+    predictedReferencePrice,
+    directCandidates,
+    bestByWinProbability,
+    bestByExpectedProfit,
+    referenceTarget,
+    referenceBestProfit,
+    residualQ40,
+    directFeasible60,
+    selected,
+    selectedLabel,
   };
-}
-
-function setText(id, text) {
-  document.querySelector(`#${id}`).textContent = text;
 }
 
 function pathFor(points) {
@@ -169,23 +283,28 @@ function drawChart(candidates, best) {
   `;
 }
 
-function renderComparison(result) {
+function renderComparison(result, contract) {
   const items = [
     {
       title: "中标概率最高",
       item: result.bestByWinProbability,
-      text: "适合抢订单、填满产能，但利润空间较低。",
+      text: "适合抢订单、冲市占率，通常需要让价更多。",
+      recommended: contract.pricing_goal === "win_probability",
     },
     {
       title: "期望利润最高",
       item: result.bestByExpectedProfit,
-      text: "同时平衡胜率和利润，是经营决策首选。",
-      recommended: true,
+      text: "经营层面的默认首选，兼顾利润与胜率。",
+      recommended: contract.pricing_goal === "profit",
     },
     {
-      title: "利润率最高",
-      item: result.bestByMargin,
-      text: "适合作为报价上限参考，直接采用容易丢单。",
+      title: "60% 目标报价",
+      item: result.referenceTarget,
+      text:
+        contract.bid_type === "投标"
+          ? "按参考价口径反推得到，适用于价低者得项目。"
+          : "仅作价格下界参考，综合评估项目不宜把它当成胜率承诺。",
+      recommended: contract.pricing_goal === "target_60_low_price",
     },
   ];
 
@@ -204,48 +323,88 @@ function renderComparison(result) {
 }
 
 function renderAdvice(contract, result) {
-  const best = result.bestByExpectedProfit;
-  const marketGap = (best.bid_price - result.predictedMarketPrice) / result.predictedMarketPrice;
-  let riskLevel = "中等";
-  let riskText = "推荐报价在利润与中标概率之间保持平衡。";
+  const selected = result.selected;
+  const marketGap = (selected.bid_price - result.predictedMarketPrice) / result.predictedMarketPrice;
+  const riskLevel = selected.win_probability >= 0.5 ? "较低" : selected.win_probability >= 0.25 ? "中等" : "偏高";
+  const referenceGap = result.referenceTarget.bid_price - result.predictedReferencePrice;
 
-  if (best.win_probability < 0.1) {
-    riskLevel = "偏高";
-    riskText = "中标概率较低，适合利润优先策略；如公司急需订单，可改看中标概率最高报价。";
-  } else if (best.win_probability > 0.25) {
-    riskLevel = "较低";
-    riskText = "中标概率相对稳健，报价仍保留一定利润空间。";
-  }
-
-  setText("adviceBid", formatMoney(best.bid_price));
+  setText("adviceBid", formatMoney(selected.bid_price));
   setText("riskLevel", riskLevel);
-  setText("riskText", riskText);
+  setText(
+    "riskText",
+    contract.pricing_goal === "target_60_low_price"
+      ? "该方案按参考价口径把报价压至 60% 目标位置，适合标准低价竞争项目。"
+      : `当前推荐报价相对预测市场价${marketGap >= 0 ? "高" : "低"} ${formatPercent(Math.abs(marketGap))}。`,
+  );
   setText(
     "adviceReason",
-    `建议报价比预测市场中标价${marketGap >= 0 ? "高" : "低"} ${formatPercent(Math.abs(marketGap))}，预计可获得 ${formatMoney(best.expected_profit)} 的期望利润。`,
+    contract.pricing_goal === "target_60_low_price"
+      ? `预测竞争参考价为 ${formatMoney(result.predictedReferencePrice)}，残差 40% 分位点为 ${formatMoney(result.residualQ40)}，因此 60% 目标报价约为 ${formatMoney(result.referenceTarget.bid_price)}。`
+      : `${result.selectedLabel}下，推荐报价为 ${formatMoney(selected.bid_price)}，预计中标概率 ${formatPercent(selected.win_probability)}，期望利润 ${formatMoney(selected.expected_profit)}。`,
+  );
+  setText(
+    "formulaText",
+    contract.pricing_goal === "target_60_low_price"
+      ? "bid_60 = predicted reference price + q40(residual)"
+      : "Expected Profit = P(win | bid) × (bid - cost) × quantity",
   );
 
   document.querySelector("#adviceList").innerHTML = `
-    <li>若公司目标是经营绩效最大化，采用期望利润最高报价 ${formatMoney(best.bid_price)}。</li>
-    <li>若客户明确低价优先，可把报价下调至 ${formatMoney(result.bestByWinProbability.bid_price)} 附近以提高胜率。</li>
-    <li>若这是战略客户或后续订单入口，建议将中标概率作为更高权重。</li>
-    <li>本合同数量为 ${contract.quantity} 辆，单车成本 ${formatMoney(contract.orion_est_cost)}，总利润对报价变化较敏感。</li>
+    <li>直接模型预测市场中标价约为 ${formatMoney(result.predictedMarketPrice)}，参考价模型预测竞争参考价约为 ${formatMoney(result.predictedReferencePrice)}。</li>
+    <li>中标概率最高报价为 ${formatMoney(result.bestByWinProbability.bid_price)}，对应胜率 ${formatPercent(result.bestByWinProbability.win_probability)}。</li>
+    <li>期望利润最高报价为 ${formatMoney(result.bestByExpectedProfit.bid_price)}，对应期望利润 ${formatMoney(result.bestByExpectedProfit.expected_profit)}。</li>
+    <li>若按价低者得并追求 60% 中标率，参考价口径给出的报价为 ${formatMoney(result.referenceTarget.bid_price)}，比预测参考价低 ${formatMoney(Math.abs(referenceGap))}。</li>
+    <li>${result.directFeasible60 ? "直接中标概率模型下存在不低于 60% 的候选报价。" : "直接中标概率模型下，不存在达到 60% 中标率的可行报价。"} </li>
   `;
 }
 
 function render() {
+  if (!state.bundle) {
+    return;
+  }
+
   const contract = readContract();
   const result = calculate(contract);
-  const best = result.bestByExpectedProfit;
+  const selected = result.selected;
 
   setText("marketPrice", formatMoney(result.predictedMarketPrice));
-  setText("bestBid", formatMoney(best.bid_price));
-  setText("bestProbability", formatPercent(best.win_probability));
-  setText("bestProfit", formatMoney(best.expected_profit));
+  setText("bestBid", formatMoney(selected.bid_price));
+  setText("bestProbability", formatPercent(selected.win_probability));
+  setText("bestProfit", formatMoney(selected.expected_profit));
+  setText("bestBidLabel", result.selectedLabel);
+  setText(
+    "bestProbabilityLabel",
+    contract.pricing_goal === "target_60_low_price" ? "参考价口径下设定为 60%" : "第二层：RandomForest 中标率估计",
+  );
+  setText(
+    "bestProfitLabel",
+    contract.pricing_goal === "target_60_low_price" ? "0.6 × 利润 × 数量" : "P(win) × 利润 × 数量",
+  );
 
-  drawChart(result.candidates, best);
-  renderComparison(result);
+  drawChart(result.directCandidates, selected);
+  renderComparison(result, contract);
   renderAdvice(contract, result);
+}
+
+function applyDefaults(defaults) {
+  Object.entries(defaults).forEach(([key, value]) => {
+    const field = form.elements.namedItem(key);
+    if (field) {
+      field.value = String(value);
+    }
+  });
+}
+
+async function init() {
+  try {
+    const response = await fetch("./web_model_bundle.json");
+    state.bundle = await response.json();
+    applyDefaults(state.bundle.defaults);
+    render();
+  } catch (error) {
+    console.error(error);
+    setText("adviceReason", "模型工件加载失败，请检查 web_model_bundle.json 是否已部署。");
+  }
 }
 
 form.addEventListener("submit", (event) => {
@@ -257,4 +416,4 @@ form.addEventListener("input", () => {
   render();
 });
 
-render();
+init();

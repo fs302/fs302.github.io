@@ -36,29 +36,30 @@
           <form id="contractForm" class="form-grid">
             <label>
               车辆数量
-              <input name="quantity" type="number" min="1" value="30" />
+              <input name="quantity" type="number" min="1" value="5" />
             </label>
             <label>
               单车成本
-              <input name="orion_est_cost" type="number" min="1" value="245000" />
+              <input name="orion_est_cost" type="number" min="1" value="234229" />
             </label>
             <label>
               车型描述
-              <input name="model_raw" type="text" value="40 LF CNG" />
+              <input name="model_raw" type="text" value="30' LF D" />
             </label>
             <label>
               车长
               <select name="bus_length_ft">
-                <option value="30">30 ft</option>
+                <option value="30" selected>30 ft</option>
                 <option value="35">35 ft</option>
-                <option value="40" selected>40 ft</option>
+                <option value="40">40 ft</option>
               </select>
             </label>
             <label>
               燃料类型
               <select name="fuel_type">
-                <option value="D">Diesel</option>
-                <option value="CNG" selected>CNG</option>
+                <option value="D" selected>Diesel</option>
+                <option value="CNG">CNG</option>
+                <option value="Hyb">Hybrid</option>
               </select>
             </label>
             <label>
@@ -71,32 +72,35 @@
             <label>
               投标类型
               <select name="bid_type">
-                <option value="BID">BID</option>
-                <option value="NEG">NEG</option>
-                <option value="EVALUATED">EVALUATED</option>
-                <option value="QUOTE">QUOTE</option>
-                <option value="low_price" selected>low_price</option>
+                <option value="投标" selected>投标 / 价低者得</option>
+                <option value="评估">评估 / 综合评分</option>
+                <option value="谈判">谈判</option>
+                <option value="报价">报价</option>
               </select>
             </label>
             <label>
               地区
-              <select name="region">
-                <option value="West" selected>West</option>
-                <option value="East">East</option>
-                <option value="South">South</option>
-                <option value="North">North</option>
-                <option value="CA">CA</option>
-                <option value="WA">WA</option>
-                <option value="NC">NC</option>
-              </select>
+              <input name="region" type="text" value="KY" />
             </label>
             <label>
               年份
-              <input name="bid_year" type="number" value="2004" />
+              <input name="bid_year" type="number" value="2002" />
             </label>
             <label>
               月份
-              <input name="bid_month" type="number" min="1" max="12" value="6" />
+              <input name="bid_month" type="number" min="1" max="12" value="5" />
+            </label>
+            <label>
+              竞争者数量
+              <input name="competitor_count" type="number" min="0" value="1" />
+            </label>
+            <label>
+              决策目标
+              <select name="pricing_goal">
+                <option value="profit" selected>期望利润最大</option>
+                <option value="win_probability">中标概率最高</option>
+                <option value="target_60_low_price">价低者得下追求 60% 中标率</option>
+              </select>
             </label>
             <button type="submit" class="primary-action">生成报价建议</button>
           </form>
@@ -110,19 +114,19 @@
               <small>第一层：市场价格参考</small>
             </article>
             <article class="metric-card">
-              <span>推荐报价</span>
+              <span>当前目标推荐报价</span>
               <strong id="bestBid">--</strong>
-              <small>第三层：期望利润最大</small>
+              <small id="bestBidLabel">按当前目标自动切换</small>
             </article>
             <article class="metric-card">
-              <span>预计中标概率</span>
+              <span>当前方案中标概率</span>
               <strong id="bestProbability">--</strong>
-              <small>第二层：报价胜率估计</small>
+              <small id="bestProbabilityLabel">第二层：报价胜率估计</small>
             </article>
             <article class="metric-card">
-              <span>期望利润</span>
+              <span>当前方案期望利润</span>
               <strong id="bestProfit">--</strong>
-              <small>P(win) × 利润 × 数量</small>
+              <small id="bestProfitLabel">P(win) × 利润 × 数量</small>
             </article>
           </div>
 
@@ -149,7 +153,7 @@
               <span class="step">03</span>
               <div>
                 <h2>三种报价目标对比</h2>
-                <p>经营决策优先看期望利润最高报价</p>
+                <p>直接模型与参考价口径并列展示</p>
               </div>
             </div>
             <div class="comparison" id="comparisonTable"></div>
@@ -178,8 +182,8 @@
           </div>
 
           <div class="formula-card">
-            <span>模型公式</span>
-            <code>Expected Profit = P(win | bid) × (bid - cost) × quantity</code>
+            <span>模型摘要</span>
+            <code id="formulaText">Expected Profit = P(win | bid) × (bid - cost) × quantity</code>
           </div>
 
           <ul class="advice-list" id="adviceList"></ul>
