@@ -220,6 +220,7 @@ function calculate(contract) {
     predictedMarketPrice,
     predictedReferencePrice,
     directCandidates,
+    referenceCandidates,
     bestByWinProbability,
     bestByExpectedProfit,
     referenceTarget,
@@ -381,7 +382,8 @@ function render() {
     contract.pricing_goal === "target_60_low_price" ? "0.6 × 利润 × 数量" : "P(win) × 利润 × 数量",
   );
 
-  drawChart(result.directCandidates, selected);
+  const chartCandidates = contract.pricing_goal === "target_60_low_price" ? result.referenceCandidates : result.directCandidates;
+  drawChart(chartCandidates, selected);
   renderComparison(result, contract);
   renderAdvice(contract, result);
 }
